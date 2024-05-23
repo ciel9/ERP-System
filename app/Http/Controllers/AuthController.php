@@ -18,12 +18,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // dd(UserLogin::all());
         $credentials = $request->only('username', 'password');
         $res = UserLogin::getData($credentials);
-        // dd($res->role);
         if (isset($res) && $res->role == 'superadmin') {
-            // Authentication passed...
              $pinjam_mobil = PinjamMobil::getData();
              $user = User::getData();
              return view('dashboard.dashboard', compact('pinjam_mobil','user'));
@@ -48,7 +45,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout(); // Logout user
-        return redirect()->route('login'); // Redirect to login page
+        return view('auth.login'); // Redirect to login page
     }
 
     public function register(Request $request)
@@ -82,7 +79,6 @@ class AuthController extends Controller
 
         // Mendapatkan data pinjam_mobil berdasarkan ID
         $pinjam_mobil = PinjamMobil::find($id);
-        dd($pinjam_mobil);
         // Kirim data ke view edit
         return view('edit_pinjam_mobil', compact('pinjam_mobil'));
     }
